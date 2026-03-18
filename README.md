@@ -5,7 +5,7 @@
 
 ## 📖 Descripción
 
-**Streamlit-Network-Tools** es una aplicación web desarrollada con Streamlit diseñada para facilitar la comprobación de conectividad (puertos TCP abiertos) en múltiples equipos de red, servidores y relés de protección. 
+**Streamlit-Network-Tools** es una aplicación web desarrollada con Streamlit diseñada para facilitar la comprobación de conectividad (puertos TCP abiertos) en múltiples equipos de red, servidores. 
 
 La herramienta incluye un sistema de autenticación, la capacidad de realizar pruebas unitarias o masivas, y la generación automática de logs diarios exportables en formato CSV.
 
