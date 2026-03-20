@@ -107,7 +107,6 @@ Para añadir nuevos equipos, simplemente edita el fichero JSON siguiendo la estr
 |---|---|
 | [Streamlit](https://streamlit.io/) | Framework web para la interfaz de usuario |
 | [Pandas](https://pandas.pydata.org/) | Manipulación de datos, lectura/escritura de CSV y Excel |
-| [openpyxl](https://openpyxl.readthedocs.io/) | Lectura de archivos Excel (`.xlsx`) |
 | `socket` *(stdlib)* | Comprobación de puertos TCP abiertos |
 | `datetime` *(stdlib)* | Generación de timestamps para logs |
 | `os` *(stdlib)* | Gestión de ficheros de log |
