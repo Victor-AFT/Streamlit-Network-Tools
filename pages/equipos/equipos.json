@@ -1,0 +1,66 @@
+{
+  "equipoA": [
+    {
+      "PROT_MODEL_A": 502,
+      "PROT_MODEL_B": 502,
+      "PROT_MODEL_C": 448,
+      "GENERIC_RELAY_1": 23,
+      "COMM_GATEWAY_A": 443,
+      "RELAY_SERIES_X_1": 106,
+      "RELAY_SERIES_X_2": 106,
+      "PROT_UNIT_701": 4448,
+      "PROT_UNIT_702": 4448,
+      "SYNC_DEVICE_ALPHA": 443,
+      "TIME_SYNC_GENERIC": 443,
+      "SOCKET_AUX_1": 50002,
+      "SOCKET_AUX_2": 50003,
+      "RELAY_TYPE_Z": 23,
+      "UNIT_ST_200-K": 106,
+      "UNIT_ST_300-K": 106,
+      "UNIT_ST_400": 106,
+      "VIDEO_PROC_8": 106,
+      "RELAY_EXT_1": 23,
+      "RELAY_EXT_2": 23,
+      "PROT_LINE_A": 106,
+      "PROT_LINE_B": 106,
+      "S_UNIT_82": 106,
+      "S_UNIT_85": 106,
+      "COMPACT_RELAY_V1": 23
+    }
+  ],
+  "equipoB": [
+    {
+      "VENDOR_ALPHA": {
+        "TERM_V": 22,
+        "CTRL_C": 22,
+        "INT_I": 22
+      },
+      "VENDOR_BETA": {
+        "INT_I": 5901,
+        "TERM_V": 5901
+      },
+      "VENDOR_GAMMA": {
+        "PROC_CPU_1": 2000,
+        "PROC_CPU_1-E": 22,
+        "CTRL_MAIN": 2000,
+        "REMOTE_DESKTOP_INT": 3389,
+        "WEB_INTERFACE": 443,
+        "CPU_MONITOR": 80
+      },
+      "VENDOR_DELTA": {
+        "INT_I": 5901,
+        "TERM_V": 5901
+      },
+      "MANUFACTURER_X": {
+        "CTRL_SYS_P": 106,
+        "PROC_UNIT_C": 106,
+        "WEB_MGMT_GEN": 443
+      },
+      "MANUFACTURER_Y": {
+        "SYS_AK": 2404,
+        "SYS_PAS": 2404,
+        "WEB_MONITOR_GEN": 80
+      }
+    }
+  ]
+}
