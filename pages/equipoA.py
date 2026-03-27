@@ -10,11 +10,7 @@ from datetime import datetime
 import os
 import time
 
-"""
-#
-# VERSION DESARROLLO
-#
-"""
+
 #-------------- VARIABLES ----------------------------
 day_hours=datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 day_log=datetime.now().strftime("%Y-%m-%d")
