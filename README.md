@@ -5,111 +5,128 @@
 
 ## 📖 Descripción
 
-**Streamlit-Network-Tools** es una aplicación multipágina construida con Streamlit para gestionar comprobaciones de red y extracción de información de hardware vía SSH. Su objetivo principal es:
+Streamlit-Network-Tools es una aplicación web multipágina para comprobaciones de red, extracción SSH y generación de inventarios.
 
-- comprobar puertos TCP en múltiples equipos (equipoA, equipoB, etc.)
-- extraer `productInfo` desde dispositivos por SSH y generar inventario CSV
-- proporcionar un panel seguro con autenticación de usuario
-- ofrecer resultados de logs y descargas de CSV/XLSX
+### Funcionalidades principales
 
----
-
-## ✨ Características principales
-
-- 🔒 Autenticación de sesión (login en `index.py`) con panel lateral oculto si no está autenticado
-- 🧩 `equipoA` y `equipoB`: comprobación por fabricante-modelo-puerto con CSV y listado manual
-- 🛠️ `ssh_info` : conexión SSH masiva con hilos, lectura de `productInfo`, parseo y CSV
-dataset
-- 📁 Logs automáticos en `pages/logs/`, con archivo diario por fecha
-- ⬇️ Descarga de resultados como CSV desde interfaz
-- 🎨 Interfaz mejorada con tema, colores y layout `wide`
+- 🔒 Autenticación de usuario (login/logout)
+- 📡 Comprobación de puertos TCP por IP (equipoA/equipoB)
+- 🛠️ Conexión SSH por IP y extracción de `productInfo` (ssh_info)
+- 📁 Descarga de inventarios CSV y errores
+- 📋 Logs diarios automáticos
+- 🧩 UI con barra de progreso y métricas en tiempo real
 
 ---
 
-## 📂 Estructura del proyecto
+## 📚 Estructura de carpetas
 
-```text
-Streamlit-Network-Tools/
-├── index.py
-├── README.md
-├── requirements.txt
-├── pages/
-│   ├── equipoA.py
-│   ├── equipoB.py
-│   ├── ssh_info.py
-│   ├── equipos/
-│   │   └── equipos.json
-│   ├── plantillas/
-│   │   ├── PLANTILLA_EQUIPOA.xlsx
-│   │   └── PLANTILLA_EQUIPOB.xlsx
-│   ├── logs/
-│   └── files/
-└── LICENSE
-```
+- `index.py`: página de inicio (login, control de sesiones, navegación)
+- `pages/`: páginas multipágina de Streamlit
+  - `equipoA.py`: comprobación máx. 3 modos (individual, múltiple, CSV)
+  - `equipoB.py`: equivalente para otros modelos (mapeo fabricante-modelo-puerto)
+  - `ssh_info.py`: nuevo módulo de descarga SSH con hilos y reportes
+  - `equipos/equipos.json`: configuración de equipos y puertos
+  - `plantillas/PLANTILLA_EQUIPOA.xlsx` y `PLANTILLA_EQUIPOB.xlsx`
+  - `logs/`: logs de acciones (CSV diarios)
+  - `files/`: archivos generados por SSH (`.txt`, `.csv`)
+  - `ssl/`: certificados ossl utilizados por el servidor local opcional
 
 ---
 
-## 🚀 Instalar y ejecutar
+## 🚀 Requisitos e instalación
 
-### 1. Clona el repositorio
+1. Clonar repositorio
 
 ```bash
 git clone https://github.com/Victor-AFT/Streamlit-Network-Tools.git
-cd Streamlit-Network-Tools
+cd Streamlit-Network-Tools-main/Streamlit-Network-Tools-main
 ```
 
-### 2. Crea y activa entorno virtual
+2. Crear entorno virtual
 
 ```bash
 python -m venv venv
 # Windows
-venv\Scripts\activate
-# macOS/Linux
+venv\\Scripts\\activate
+# Linux/macOS
 source venv/bin/activate
 ```
 
-### 3. Instala dependencias
+3. Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
-# o en caso de no existir requirements:
-pip install streamlit pandas openpyxl paramiko
+# Si no existe requirements:
+pip install streamlit pandas openpyxl paramiko cryptography
 ```
 
-### 4. Ejecuta la app
+4. Ejecución
 
 ```bash
 streamlit run index.py
 ```
 
-Navega a `http://localhost:8501` (o `http://localhost:45850` si usas certificados en `index.py`).
+Abrir en el navegador: `http://localhost:8501`.
 
 ---
 
-## 🔒 Usuario de prueba
+## 🔧 Uso de la app
 
-- Usuario: `admin`
-- Contraseña: `admin`
+1. En `index.py`, iniciar sesión con usuario y contraseña.
+2. Seleccionar una página de `pages` desde el menú lateral.
+3. En `ssh_info`, elegir modo:
+   - `Individual`: IP + usuario + contraseña.
+   - `Múltiple`: subir CSV con columna `IP` + definir hilos.
+4. Revisar resultados y descargar inventarios.
 
----
+### `ssh_info` extra:
 
-## ⚙️ Página `ssh_info` (antes `Get_info_threads`)
-
-- usa `paramiko` para SSH
-- verifica conectividad con `ping`
-- descarga `productInfo` a `pages/files/` en texto
-- parsea datos y genera CSV con `pandas`
-- ejecuta en varios hilos (configurable desde UI)
-
----
-
-## 📝 Consejos
-
-- Asegúrate de que las carpetas `pages/logs` y `pages/files` existen, o la app las creará automáticamente.
-- Para una ejecución de producción, quita el bloque `subprocess.run(["streamlit", "run", "index.py", ...])` en `index.py`.
-- Ajusta credenciales y rutas de certificados si usas SSL.
+- Genera archivos .txt de `productInfo` en `pages/files/`.
+- Parseo de información (MAC, order_code, serial, version).
+- Crea inventario consolidado y descarga CSV.
+- Genera reportes de errores de lectura.
 
 ---
+
+## 🗂️ Descripción detallada de carpeta y archivos
+
+### `index.py`
+- Autenticación básica (admin/admin por defecto).
+- Mensajes de sesión y estado.
+- Opcional: check y ocultación de sidebar si no autenticado.
+
+### `pages/equipoA.py` y `pages/equipoB.py`
+- `equipoA`: comprobación de un equipo o cientos con puerto asociado.
+- `equipoB`: equivalente con fabricante y modelo.
+- Log en `pages/logs/check_sesion/...`.
+- Descarga CSV de resultados.
+
+### `pages/ssh_info.py`
+- Conexión via `paramiko` con KEX ampliado.
+- Comandos SQL específicos del dispositivo Ruggedcom.
+- Guarda `productInfo` en `pages/files/`.
+- Parseo y puede generar `inventario_ProveedorX.csv`.
+
+### `pages/equipos/equipos.json`
+Estructura de datos:
+```json
+{
+  "equipoA": [{"Proveedor1": {"modeloA": 22, ...}}],
+  "equipoB": [{"Proveedor2": {"modeloX": 23, ...}}]
+}
+```
+
+### `pages/plantillas`:
+- Plantillas de ejemplo para carga masiva del tipo `equipoA` y `equipoB`.
+
+### `pages/logs`:
+- Archivos CSV diarios con todas las comprobaciones:
+  - IP, tipo, fabricante, modelo, puerto, estado, fecha.
+
+### `pages/files`:
+- Archivos TXT descargados por SSH.
+- Archivos CSV generados por parsing.
+
 
 ## 📄 Licencia
 
