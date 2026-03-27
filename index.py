@@ -38,7 +38,7 @@ subprocess.run([
     "--server.port=45850"
 ])
 
-st.set_page_config(page_title="Acceso al portal OyM", page_icon="🔒", layout="centered")
+st.set_page_config(page_title="Acceso al portal", page_icon="🔒", layout="centered")
 st.write(f"Versión: {__version__}")
 logging.info(f"Origin IP : {st.context.ip_address} to Destiny IP :{st.context.headers.get("Host")}")
 
