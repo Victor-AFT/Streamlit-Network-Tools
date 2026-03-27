@@ -5,114 +5,112 @@
 
 ## 📖 Descripción
 
-**Streamlit-Network-Tools** es una aplicación web desarrollada con [Streamlit](https://streamlit.io/) diseñada para facilitar la **comprobación de conectividad TCP** en múltiples equipos de red y servidores.
+**Streamlit-Network-Tools** es una aplicación multipágina construida con Streamlit para gestionar comprobaciones de red y extracción de información de hardware vía SSH. Su objetivo principal es:
 
-La herramienta permite verificar si puertos TCP específicos están abiertos y respondiendo en las IPs indicadas, ofreciendo tres modos de prueba: individual, múltiple (pegando listados de IPs) y masiva mediante ficheros Excel. Incluye un sistema de autenticación, registro automático de resultados y logs diarios exportables en CSV.
-
----
-
-## ✨ Características Principales
-
-| Característica | Descripción |
-|---|---|
-| 🔒 **Autenticación** | Portal de login obligatorio que restringe el acceso al panel lateral |
-| 📡 **Comprobación TCP** | Verifica puertos abiertos por IP mediante *sockets* con timeout configurable |
-| 🧩 **Prueba Individual** | Selecciona modelo/fabricante e introduce una IP para probar un equipo |
-| 📦 **Prueba Múltiple** | Pega un listado de IPs para probarlas todas en lote bajo un mismo modelo/puerto |
-| 📁 **Carga Masiva (XLSX)** | Sube un archivo Excel con columnas `IP` y `MODELO` para comprobaciones automáticas |
-| 📥 **Plantillas descargables** | Descarga plantillas Excel preformateadas para cada tipo de equipo |
-| 📊 **Registro y Logs** | Historial de sesión visible en la app y guardado automático en CSV diario |
-| ⬇️ **Exportación CSV** | Descarga de resultados y logs en formato CSV en cualquier momento |
-| 📘 **Leyenda de Equipos** | Consulta integrada de modelos, fabricantes y sus puertos asociados |
+- comprobar puertos TCP en múltiples equipos (equipoA, equipoB, etc.)
+- extraer `productInfo` desde dispositivos por SSH y generar inventario CSV
+- proporcionar un panel seguro con autenticación de usuario
+- ofrecer resultados de logs y descargas de CSV/XLSX
 
 ---
 
-## 📂 Estructura del Proyecto
+## ✨ Características principales
+
+- 🔒 Autenticación de sesión (login en `index.py`) con panel lateral oculto si no está autenticado
+- 🧩 `equipoA` y `equipoB`: comprobación por fabricante-modelo-puerto con CSV y listado manual
+- 🛠️ `ssh_info` : conexión SSH masiva con hilos, lectura de `productInfo`, parseo y CSV
+dataset
+- 📁 Logs automáticos en `pages/logs/`, con archivo diario por fecha
+- ⬇️ Descarga de resultados como CSV desde interfaz
+- 🎨 Interfaz mejorada con tema, colores y layout `wide`
+
+---
+
+## 📂 Estructura del proyecto
 
 ```text
-📁 Streamlit-Network-Tools/
-│
-├── index.py                             # Página principal: portal de Login
-│
-└── 📁 pages/                            # Carpeta obligatoria de Streamlit (multipágina)
-    ├── equipoA.py                       # Comprobación de equipos tipo A
-    ├── equipoB.py                       # Comprobación de equipos tipo B
-    │
-    ├── 📁 equipos/
-    │   └── equipos.json                 # Configuración de modelos y puertos por tipo de equipo
-    │
-    ├── 📁 plantillas/
-    │   ├── PLANTILLA_EQUIPOA.xlsx       # Plantilla Excel para carga masiva (Equipo A)
-    │   └── PLANTILLA_EQUIPOB.xlsx       # Plantilla Excel para carga masiva (Equipo B)
-    │
-    └── 📁 logs/                         # Logs diarios generados automáticamente
-        └── log_YYYY-MM-DD.csv           # Un fichero CSV por día con todas las comprobaciones
+Streamlit-Network-Tools/
+├── index.py
+├── README.md
+├── requirements.txt
+├── pages/
+│   ├── equipoA.py
+│   ├── equipoB.py
+│   ├── ssh_info.py
+│   ├── equipos/
+│   │   └── equipos.json
+│   ├── plantillas/
+│   │   ├── PLANTILLA_EQUIPOA.xlsx
+│   │   └── PLANTILLA_EQUIPOB.xlsx
+│   ├── logs/
+│   └── files/
+└── LICENSE
 ```
 
 ---
 
-## 🚀 Instalación y Uso
+## 🚀 Instalar y ejecutar
 
-### Requisitos Previos
-
-- **Python 3.8** o superior
-
-### 1. Clonar el repositorio
+### 1. Clona el repositorio
 
 ```bash
 git clone https://github.com/Victor-AFT/Streamlit-Network-Tools.git
 cd Streamlit-Network-Tools
 ```
 
-### 2. Crear un entorno virtual (recomendado)
+### 2. Crea y activa entorno virtual
 
 ```bash
 python -m venv venv
 # Windows
 venv\Scripts\activate
-# Linux/macOS
+# macOS/Linux
 source venv/bin/activate
 ```
 
-### 3. Instalar dependencias
+### 3. Instala dependencias
 
 ```bash
-pip install streamlit pandas openpyxl
+pip install -r requirements.txt
+# o en caso de no existir requirements:
+pip install streamlit pandas openpyxl paramiko
 ```
 
-### 4. Ejecutar la aplicación
+### 4. Ejecuta la app
 
 ```bash
 streamlit run index.py
 ```
 
-La aplicación se abrirá en tu navegador en `http://localhost:8501`.
+Navega a `http://localhost:8501` (o `http://localhost:45850` si usas certificados en `index.py`).
 
 ---
 
-## 🔧 Configuración de Equipos
+## 🔒 Usuario de prueba
 
-Los modelos de equipos y sus puertos asociados se definen en el archivo **`pages/equipos/equipos.json`**. La estructura soporta dos tipos:
-
-- **`equipoA`**: Mapeo directo `modelo → puerto`
-- **`equipoB`**: Mapeo jerárquico `fabricante → modelo → puerto`
-
-Para añadir nuevos equipos, simplemente edita el fichero JSON siguiendo la estructura existente.
+- Usuario: `admin`
+- Contraseña: `admin`
 
 ---
 
-## 📚 Librerías Utilizadas
+## ⚙️ Página `ssh_info` (antes `Get_info_threads`)
 
-| Librería | Uso |
-|---|---|
-| [Streamlit](https://streamlit.io/) | Framework web para la interfaz de usuario |
-| [Pandas](https://pandas.pydata.org/) | Manipulación de datos, lectura/escritura de CSV y Excel |
-| `socket` *(stdlib)* | Comprobación de puertos TCP abiertos |
-| `datetime` *(stdlib)* | Generación de timestamps para logs |
-| `os` *(stdlib)* | Gestión de ficheros de log |
+- usa `paramiko` para SSH
+- verifica conectividad con `ping`
+- descarga `productInfo` a `pages/files/` en texto
+- parsea datos y genera CSV con `pandas`
+- ejecuta en varios hilos (configurable desde UI)
+
+---
+
+## 📝 Consejos
+
+- Asegúrate de que las carpetas `pages/logs` y `pages/files` existen, o la app las creará automáticamente.
+- Para una ejecución de producción, quita el bloque `subprocess.run(["streamlit", "run", "index.py", ...])` en `index.py`.
+- Ajusta credenciales y rutas de certificados si usas SSL.
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+MIT © 2026
