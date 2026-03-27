@@ -11,11 +11,7 @@ import time
 
 #Librerias de log
 import logging.handlers
-"""
-#
-# VERSION DESARROLLO
-#
-"""
+
 ruta_pages="pages/"
 day_log=datetime.now().strftime("%Y-%m-%d")
 ruta_log_system=f"{ruta_pages}logs/system"
@@ -70,7 +66,7 @@ if not st.session_state["authenticated"]:
 
     if submit:
         # Credenciales de ejemplo (se pueden cambiar luego)
-        if usuario == "admin" and password == "oym":
+        if usuario == "admin" and password == "admin":
             st.session_state["authenticated"] = True
             st.success("Acceso concedido.")
             logging.info(f"Sesion iniciada con el usuario: {usuario}")
